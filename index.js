@@ -15,22 +15,10 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
 
 app.use("/api/v1", indexRoutes);
-
-app.use((err, req, res, next) => {
-    res.status(500).json({
-        message: "No estoy funcionando",
-        data: null,
-        success:"ok",
-        cant: 0
-    })
-})
-
-
-
 // GET /
 app.get("/", (req, res)=> {
-    res.setHeader("Content-Type", "text/html")
-
+    try {
+        res.setHeader("Content-Type", "text/html")
     const LandingHTML = `<h1>Bienvenidos a nuestra REST-API que consiste en:</h1>
     <ul>
         <li>Una aplicación en ReactJS usando la maquetación proporcionada.</li>
@@ -42,8 +30,22 @@ app.get("/", (req, res)=> {
         <li>Uso de Vercel para el deploy.</li>
     </ul>
     `
-    res.status(200).send(LandingHTML)
+        res.status(200).send(LandingHTML);
+
+    }	catch (error) {
+        next(error);
+    }
 });
+
+app.use((err, req, res, next) => {
+    res.status(500).json({
+        message: "No estoy funcionando",
+        data: null,
+        success:"",
+        cant: 0
+    })
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server running on ${URL}`);
