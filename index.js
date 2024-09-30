@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import indexRoutes from './routes/index.routes.js';
 import { PORT, DOMAIN, URL } from './config/config.js'
+import path from 'path';
+import { __dirname } from './config/config.js';
 
 const app = express();
 
@@ -12,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public"))) 
 
 app.use("/api/v1", indexRoutes);
 // GET /
